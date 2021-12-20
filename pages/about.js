@@ -1,13 +1,64 @@
 import React from "react";
 import styles from '../styles/About.module.css'
 
-export default function About(){
-    return(
-        <div className={styles.container}>
-            <h2 className={styles.title}>About Page</h2>
-            <p className={styles.description}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </p>
-        </div>
-    )
+function About({ credits , data1 }){ return(
+
+<div className={styles.container}>
+    <h2 className={styles.title}>Dashboard</h2>
+    <p className={styles.description}>{ data1.Sum_OffsetCount }</p>
+    <p className={styles.description}>{ data1.Sum_used }</p>
+    <p className={styles.description}>{ data1.Sum_difference }</p>
+    <ul>
+      {credits.map((credit) => (
+        <li>
+            <div>{credit._id}</div>
+            <div>{credit.providerId}</div>
+            <div>{credit.product}</div>
+            <div>{credit.created}</div>
+            <div>{credit.updated}</div>
+            <div>{credit.recorded}</div>
+            <div>{credit.recordedId}</div>
+            <div>{credit.offsetCount}</div>
+            <div>{credit.used}</div>
+            <div>{credit.depleted}</div>
+            <div>{credit.ledgerId}</div>
+            <div>&nbsp;</div>
+        </li>
+        
+      ))}
+    </ul>
+</div>
+
+)}
+
+
+
+export async function getServerSideProps(context) {
+   
+
+
+    const bodydata = {}
+    const res1 = await fetch("http://localhost:3000/users/get_stats", {
+        method: "POST", 
+        headers: {'Content-Type': 'application/json'}, 
+        body: JSON.stringify(bodydata)
+    });
+    const data1 = await res1.json()
+
+    const res_credits = await fetch("http://localhost:3000/users/issued_credits", {
+        method: "POST", 
+        headers: {'Content-Type': 'application/json'}, 
+        body: JSON.stringify(bodydata)
+    });
+    
+
+    const credits = await res_credits.json()
+    console.log(credits)
+
+    if (!data1){ return{notFound: true,}}
+    if (!credits){ return{notFound: true,}}
+
+    return { props: {credits, data1,},}
 }
+
+export default About

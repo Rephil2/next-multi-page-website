@@ -1,3 +1,8 @@
+Go here for a walkthrough:
+
+https://www.techomoro.com/how-to-create-a-multi-page-website-with-next-js/
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
