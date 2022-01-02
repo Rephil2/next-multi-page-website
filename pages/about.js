@@ -1,13 +1,13 @@
 import React from "react";
 import styles from '../styles/About.module.css'
 
-function About({ credits , data1 }){ return(
+function About({ credits , data }){ return(
 
 <div className={styles.container}>
     <h2 className={styles.title}>Dashboard</h2>
-    <p className={styles.description}>{ data1.Sum_OffsetCount }</p>
-    <p className={styles.description}>{ data1.Sum_used }</p>
-    <p className={styles.description}>{ data1.Sum_difference }</p>
+    <p className={styles.description}>{ data.Sum_OffsetCount }</p>
+    <p className={styles.description}>{ data.Sum_used }</p>
+    <p className={styles.description}>{ data.Sum_difference }</p>
     <ul>
       {credits.map((credit) => (
         <li>
@@ -32,10 +32,7 @@ function About({ credits , data1 }){ return(
 )}
 
 
-
 export async function getServerSideProps(context) {
-   
-
 
     const bodydata = {}
     const res1 = await fetch("http://localhost:3000/users/get_stats", {
@@ -43,7 +40,7 @@ export async function getServerSideProps(context) {
         headers: {'Content-Type': 'application/json'}, 
         body: JSON.stringify(bodydata)
     });
-    const data1 = await res1.json()
+    const data = await res1.json()
 
     const res_credits = await fetch("http://localhost:3000/users/issued_credits", {
         method: "POST", 
@@ -53,12 +50,11 @@ export async function getServerSideProps(context) {
     
 
     const credits = await res_credits.json()
-    console.log(credits)
 
-    if (!data1){ return{notFound: true,}}
+    if (!data){ return{notFound: true,}}
     if (!credits){ return{notFound: true,}}
 
-    return { props: {credits, data1,},}
+    return { props: {credits, data,},}
 }
 
 export default About
